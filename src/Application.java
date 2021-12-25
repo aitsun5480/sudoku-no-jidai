@@ -14,27 +14,40 @@ public class Application {
                 new String[]{leer, leer, "6", leer, leer, "2", leer, leer, leer},
         };
 
+        sudokuDrucken(sudoku);
+    }
+
+    private static void sudokuDrucken(String[][] sudoku){
         for (int zähler = 0; zähler < 9; zähler = zähler + 1) {
             sudokuReiheDrucken(sudoku[zähler]);
 
             if (zähler == 2 || zähler == 5) {
-                System.out.println("=======================");
+                drucken("=======================");
+                neueReiheDrucken();
             }
         }
     }
 
     private static void sudokuReiheDrucken(String[] sudokuReihe) {
         for (int zähler = 0; zähler < 9; zähler++) {
-            System.out.print(sudokuReihe[zähler]);
+            drucken(sudokuReihe[zähler]);
 
             if (zähler == 2 || zähler == 5) {
-                System.out.print(" || ");
+                drucken(" || ");
             } else {
                 if (zähler < 8) {
-                    System.out.print(" ");
+                    drucken(" ");
                 }
             }
         }
+        neueReiheDrucken();
+    }
+
+    private static void drucken(String text){
+        System.out.print(text);
+    }
+
+    private static void neueReiheDrucken(){
         System.out.println();
     }
 }
