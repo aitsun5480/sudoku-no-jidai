@@ -1,4 +1,6 @@
 public class Application {
+    private static String[] alphabet = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
     private static String leer = "_";
     private static String[][] aufgabe31 = new String[][]{
             new String[]{leer, leer, leer, leer, leer, leer, leer, "3", leer},
@@ -25,7 +27,50 @@ public class Application {
     };
 
     public static void main(String[] args) {
-        sudokuDrucken(lösung22);
+        neueReiheDrucken();
+
+        boolean ergebnis = sudokuReihePrüfen(lösung22[0]);
+
+        drucken(String.valueOf(ergebnis));
+    }
+
+    private static boolean sudokuReihePrüfen(String[] sudokuReihe) {
+        String[] fehlendeZahlen = alphabet;
+
+        for(int zähler = 0; zähler < sudokuReihe.length; zähler++){
+            String sudokuZahl = sudokuReihe[zähler];
+
+            for (int fehlendeZahlenZähler = 0 ; fehlendeZahlenZähler < fehlendeZahlen.length; fehlendeZahlenZähler++){
+                String fehlendeZahl = fehlendeZahlen[fehlendeZahlenZähler];
+
+                if(sudokuZahl == fehlendeZahl){
+                    fehlendeZahlen = entferneZahl(sudokuZahl, fehlendeZahlen);
+                    break;
+                }
+            }
+        }
+
+        boolean ergebnis = fehlendeZahlen.length == 0;
+
+        return ergebnis;
+    }
+
+    private static String[] entferneZahl(String sudokuZahl, String[] fehlendeZahlen){
+        if(fehlendeZahlen.length == 0){
+            return new String[]{};
+        }
+
+        int ergebnisZähler = 0;
+        String[] ergbenis = new String[fehlendeZahlen.length -1];
+        for (int zähler = 0 ; zähler < fehlendeZahlen.length; zähler++){
+            String fehlendeZahl = fehlendeZahlen[zähler];
+            if(fehlendeZahl != sudokuZahl){
+                ergbenis[ergebnisZähler] = fehlendeZahl;
+                ergebnisZähler++;
+            }
+        }
+
+        return ergbenis;
     }
 
     private static void sudokuDrucken(String[][] sudoku) {
