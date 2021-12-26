@@ -27,11 +27,23 @@ public class Application {
     };
 
     public static void main(String[] args) {
-        neueReiheDrucken();
+        sudokuDrucken(lösung22);
 
-        boolean ergebnis = sudokuReihePrüfen(lösung22[0]);
+        boolean ergebnis = sudokuReihenPrüfen(lösung22);
 
         drucken(String.valueOf(ergebnis));
+    }
+
+    private static boolean sudokuReihenPrüfen(String[][] sudoku){
+        for(int zähler = 0; zähler < sudoku.length; zähler++){
+            boolean ergbnisReihe= sudokuReihePrüfen(sudoku[zähler]);
+
+            if(ergbnisReihe == false){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static boolean sudokuReihePrüfen(String[] sudokuReihe) {
