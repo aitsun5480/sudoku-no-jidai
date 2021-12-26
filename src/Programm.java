@@ -25,8 +25,8 @@ public class Programm {
     };
 
     public static void main(String[] args) {
-        boolean ergebnis = Prüfer.sudokuPrüfen(lösung22);
+        String[][] lösung = Löser.sudokuLösen(aufgabe31);
 
-        Drucker.drucken(String.valueOf(ergebnis));
+        Drucker.sudokuDrucken(lösung);
     }
 }
