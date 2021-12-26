@@ -27,18 +27,55 @@ public class Application {
     };
 
     public static void main(String[] args) {
-        sudokuDrucken(lösung22);
-
-        boolean ergebnis = sudokuReihenPrüfen(lösung22);
+        boolean ergebnis = sudokuSpaltenPrüfen(lösung22);
 
         drucken(String.valueOf(ergebnis));
     }
 
-    private static boolean sudokuReihenPrüfen(String[][] sudoku){
-        for(int zähler = 0; zähler < sudoku.length; zähler++){
-            boolean ergbnisReihe= sudokuReihePrüfen(sudoku[zähler]);
+    private static boolean sudokuSpaltenPrüfen(String[][] sudoku) {
+        String[][] fehlendeZahlenProSpalte = new String[][]{
+                alphabet,
+                alphabet,
+                alphabet,
+                alphabet,
+                alphabet,
+                alphabet,
+                alphabet,
+                alphabet,
+                alphabet
+        };
 
-            if(ergbnisReihe == false){
+        for (int reihenZähler = 0; reihenZähler < sudoku.length; reihenZähler++) {
+            String[] sudokuReihe = sudoku[reihenZähler];
+            for (int spaltenZähler = 0; spaltenZähler < sudokuReihe.length; spaltenZähler++) {
+                String zahl = sudokuReihe[spaltenZähler];
+
+                String[] fehlendeZahlenInSpalte = fehlendeZahlenProSpalte[spaltenZähler];
+                for (int fehlendeZahlenZähler = 0; fehlendeZahlenZähler < fehlendeZahlenInSpalte.length; fehlendeZahlenZähler++) {
+                    String fehlendeZahl = fehlendeZahlenInSpalte[fehlendeZahlenZähler];
+
+                    if (zahl == fehlendeZahl) {
+                        fehlendeZahlenProSpalte[spaltenZähler] = entferneZahl(zahl, fehlendeZahlenInSpalte);
+                        break;
+                    }
+                }
+            }
+        }
+
+        for (int zähler = 0; zähler < fehlendeZahlenProSpalte.length; zähler++) {
+            if (fehlendeZahlenProSpalte[zähler].length > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean sudokuReihenPrüfen(String[][] sudoku) {
+        for (int zähler = 0; zähler < sudoku.length; zähler++) {
+            boolean ergbnisReihe = sudokuReihePrüfen(sudoku[zähler]);
+
+            if (ergbnisReihe == false) {
                 return false;
             }
         }
@@ -49,13 +86,13 @@ public class Application {
     private static boolean sudokuReihePrüfen(String[] sudokuReihe) {
         String[] fehlendeZahlen = alphabet;
 
-        for(int zähler = 0; zähler < sudokuReihe.length; zähler++){
+        for (int zähler = 0; zähler < sudokuReihe.length; zähler++) {
             String sudokuZahl = sudokuReihe[zähler];
 
-            for (int fehlendeZahlenZähler = 0 ; fehlendeZahlenZähler < fehlendeZahlen.length; fehlendeZahlenZähler++){
+            for (int fehlendeZahlenZähler = 0; fehlendeZahlenZähler < fehlendeZahlen.length; fehlendeZahlenZähler++) {
                 String fehlendeZahl = fehlendeZahlen[fehlendeZahlenZähler];
 
-                if(sudokuZahl == fehlendeZahl){
+                if (sudokuZahl == fehlendeZahl) {
                     fehlendeZahlen = entferneZahl(sudokuZahl, fehlendeZahlen);
                     break;
                 }
@@ -67,16 +104,16 @@ public class Application {
         return ergebnis;
     }
 
-    private static String[] entferneZahl(String sudokuZahl, String[] fehlendeZahlen){
-        if(fehlendeZahlen.length == 0){
+    private static String[] entferneZahl(String sudokuZahl, String[] fehlendeZahlen) {
+        if (fehlendeZahlen.length == 0) {
             return new String[]{};
         }
 
         int ergebnisZähler = 0;
-        String[] ergbenis = new String[fehlendeZahlen.length -1];
-        for (int zähler = 0 ; zähler < fehlendeZahlen.length; zähler++){
+        String[] ergbenis = new String[fehlendeZahlen.length - 1];
+        for (int zähler = 0; zähler < fehlendeZahlen.length; zähler++) {
             String fehlendeZahl = fehlendeZahlen[zähler];
-            if(fehlendeZahl != sudokuZahl){
+            if (fehlendeZahl != sudokuZahl) {
                 ergbenis[ergebnisZähler] = fehlendeZahl;
                 ergebnisZähler++;
             }
