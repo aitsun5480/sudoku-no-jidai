@@ -1,5 +1,5 @@
 public class Programm {
-    private static String leer = "_";
+    public static String leer = "_";
     private static String[][] aufgabe31 = new String[][]{
             new String[]{leer, leer, leer, leer, leer, leer, leer, "3", leer},
             new String[]{leer, "4", "9", "5", leer, leer, "1", leer, leer},
@@ -25,8 +25,8 @@ public class Programm {
     };
 
     public static void main(String[] args) {
-        String[][] lösung = Löser.sudokuLösen(aufgabe31);
+        String[] lösung = Löser.sudokuReiheLösen(aufgabe31[0]);
 
-        Drucker.sudokuDrucken(lösung);
+        Drucker.sudokuReiheDrucken(lösung);
     }
 }
