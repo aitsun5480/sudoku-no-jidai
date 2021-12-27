@@ -6,7 +6,13 @@ public class Löser {
     public static String[] sudokuReiheLösen(String[] aufgabe){
         String[] fehlendeZahlen = Prüfer.alphabet;
 
-        fehlendeZahlen = Prüfer.entferneZahl("3", fehlendeZahlen);
+        for(int zähler = 0; zähler < aufgabe.length; zähler++){
+            String element = aufgabe[zähler];
+
+            if (element != Programm.leer){
+                fehlendeZahlen = Prüfer.entferneZahl(element, fehlendeZahlen);
+            }
+        }
 
         int fehlendeZahlenZähler =0;
         for(int zähler = 0; zähler < aufgabe.length; zähler++){
