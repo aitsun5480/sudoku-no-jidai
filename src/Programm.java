@@ -25,8 +25,8 @@ public class Programm {
     };
 
     public static void main(String[] args) {
-        String[] lösung = Löser.sudokuReiheLösen(aufgabe31[1]);
+        String[][] lösung = Löser.sudokuLösen(aufgabe31);
 
-        Drucker.sudokuReiheDrucken(lösung);
+        Drucker.sudokuDrucken(lösung);
     }
 }
