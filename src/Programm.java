@@ -42,7 +42,7 @@ public class Programm {
         Drucker.drucken("AUFGABE");
         Drucker.neueReiheDrucken();
 
-        String[][] aufgabe = aufgabe31;
+        String[][] aufgabe = aufgabeEinfach;
         Drucker.sudokuDrucken(aufgabe);
 
         String[][] lösung = Löser.sudokuLösen(aufgabe);
