@@ -1,8 +1,85 @@
 public class Löser {
     public static String[][] sudokuLösen(String[][] aufgabe) {
-        String[][][] lösungsMatrix = sudokuLösungsMatrixInitialisieren(aufgabe);
+        for (int zähler =  0; Prüfer.sudokuPrüfen(aufgabe) != true; zähler++) {
+            String[][][] lösungsMatrix = sudokuLösungsMatrixInitialisieren(aufgabe);
 
-        for (int reihenZähler = 0; reihenZähler < aufgabe.length; reihenZähler++) {
+            lösungsMatrix = sudokuReihenLösen(lösungsMatrix);
+            lösungsMatrix = sudokuSpaltenLösen(lösungsMatrix);
+            lösungsMatrix = sudokuSektorenLösen(lösungsMatrix);
+
+            aufgabe = lösungBekommen(lösungsMatrix);
+
+            Drucker.drucken("Schritt "+ zähler);
+            Drucker.neueReiheDrucken();
+            Drucker.sudokuDrucken(aufgabe);
+        }
+
+        return aufgabe;
+    }
+
+    private static String[][][] sudokuSektorenLösen(String[][][] lösungsMatrix) {
+        for (int reihenZähler = 0; reihenZähler < lösungsMatrix.length; reihenZähler++) {
+            String[][] reihe = lösungsMatrix[reihenZähler];
+            for (int spaltenZähler = 0; spaltenZähler < reihe.length; spaltenZähler++) {
+                String[][] sektor = sudokuSektorBekommen(lösungsMatrix, Prüfer.sektorNummer(reihenZähler, spaltenZähler));
+
+                String[] möglicheLösungen = reihe[spaltenZähler];
+                if (möglicheLösungen.length > 1) {
+                    lösungsMatrix[reihenZähler][spaltenZähler] = entferneAlleBekanntenZahlen(möglicheLösungen, sektor);
+                }
+            }
+        }
+
+        return lösungsMatrix;
+    }
+
+    private static String[][] sudokuSektorBekommen(String[][][] lösungsMatrix, int sektorNummer) {
+        String[][] sektor = new String[lösungsMatrix.length][];
+
+        int sektorZähler = 0;
+        for (int reihenZähler = 0; reihenZähler < lösungsMatrix.length; reihenZähler++) {
+            String[][] reihe = lösungsMatrix[reihenZähler];
+            for (int spaltenZähler = 0; spaltenZähler < reihe.length; spaltenZähler++) {
+                if (Prüfer.sektorNummer(reihenZähler, spaltenZähler) == sektorNummer) {
+                    sektor[sektorZähler] = reihe[spaltenZähler];
+                    sektorZähler++;
+                }
+            }
+        }
+
+        return sektor;
+    }
+
+    private static String[][][] sudokuSpaltenLösen(String[][][] lösungsMatrix) {
+        for (int reihenZähler = 0; reihenZähler < lösungsMatrix.length; reihenZähler++) {
+            String[][] reihe = lösungsMatrix[reihenZähler];
+            for (int spaltenZähler = 0; spaltenZähler < reihe.length; spaltenZähler++) {
+                String[][] spalte = sudokuSpalteBekommen(lösungsMatrix, spaltenZähler);
+
+                String[] möglicheLösungen = reihe[spaltenZähler];
+                if (möglicheLösungen.length > 1) {
+                    lösungsMatrix[reihenZähler][spaltenZähler] = entferneAlleBekanntenZahlen(möglicheLösungen, spalte);
+                }
+            }
+        }
+
+        return lösungsMatrix;
+    }
+
+    private static String[][] sudokuSpalteBekommen(String[][][] lösungsMatrix, int spaltenZähler) {
+        String[][] spalte = new String[lösungsMatrix.length][];
+
+        for (int reihenZähler = 0; reihenZähler < lösungsMatrix.length; reihenZähler++) {
+            String[][] reihe = lösungsMatrix[reihenZähler];
+
+            spalte[reihenZähler] = reihe[spaltenZähler];
+        }
+
+        return spalte;
+    }
+
+    private static String[][][] sudokuReihenLösen(String[][][] lösungsMatrix) {
+        for (int reihenZähler = 0; reihenZähler < lösungsMatrix.length; reihenZähler++) {
             String[][] reihe = lösungsMatrix[reihenZähler];
             for (int spaltenZähler = 0; spaltenZähler < reihe.length; spaltenZähler++) {
                 String[] möglicheLösungen = reihe[spaltenZähler];
@@ -12,7 +89,26 @@ public class Löser {
             }
         }
 
-        return aufgabe;
+        return lösungsMatrix;
+    }
+
+    private static String[][] lösungBekommen(String[][][] lösungsMatrix) {
+        String[][] lösung = new String[lösungsMatrix.length][lösungsMatrix.length];
+
+        for (int reihenZähler = 0; reihenZähler < lösungsMatrix.length; reihenZähler++) {
+            String[][] reihe = lösungsMatrix[reihenZähler];
+            for (int spaltenZähler = 0; spaltenZähler < reihe.length; spaltenZähler++) {
+                String[] möglicheLösungen = reihe[spaltenZähler];
+
+                if (möglicheLösungen.length == 1) {
+                    lösung[reihenZähler][spaltenZähler] = möglicheLösungen[0];
+                } else {
+                    lösung[reihenZähler][spaltenZähler] = Programm.leer;
+                }
+            }
+        }
+
+        return lösung;
     }
 
     private static String[][][] sudokuLösungsMatrixInitialisieren(String[][] aufgabe) {
@@ -40,29 +136,5 @@ public class Löser {
             }
         }
         return möglicheLösungen;
-    }
-
-    public static String[] sudokuReiheLösen(String[] aufgabe) {
-        String[] fehlendeZahlen = Prüfer.alphabet;
-
-        for (int zähler = 0; zähler < aufgabe.length; zähler++) {
-            String element = aufgabe[zähler];
-
-            if (element != Programm.leer) {
-                fehlendeZahlen = Prüfer.entferneZahl(element, fehlendeZahlen);
-            }
-        }
-
-        int fehlendeZahlenZähler = 0;
-        for (int zähler = 0; zähler < aufgabe.length; zähler++) {
-            String element = aufgabe[zähler];
-
-            if (element == Programm.leer) {
-                aufgabe[zähler] = fehlendeZahlen[fehlendeZahlenZähler];
-                fehlendeZahlenZähler++;
-            }
-        }
-
-        return aufgabe;
     }
 }

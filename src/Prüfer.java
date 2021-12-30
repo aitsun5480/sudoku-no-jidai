@@ -155,8 +155,8 @@ public class Prüfer {
     }
 
     public static String[] entferneZahl(String sudokuZahl, String[] fehlendeZahlen) {
-        if (fehlendeZahlen.length == 0) {
-            return new String[]{};
+        if (fehlendeZahlen.length < 1) {
+            return fehlendeZahlen;
         }
 
         int ergebnisZähler = 0;
@@ -164,6 +164,10 @@ public class Prüfer {
         for (int zähler = 0; zähler < fehlendeZahlen.length; zähler++) {
             String fehlendeZahl = fehlendeZahlen[zähler];
             if (fehlendeZahl != sudokuZahl) {
+                if (ergebnisZähler == ergbenis.length) {
+                    return fehlendeZahlen;
+                }
+
                 ergbenis[ergebnisZähler] = fehlendeZahl;
                 ergebnisZähler++;
             }

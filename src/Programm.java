@@ -1,3 +1,5 @@
+import java.awt.dnd.DragGestureRecognizer;
+
 public class Programm {
     public static String leer = "_";
     private static String[][] aufgabe31 = new String[][]{
@@ -24,8 +26,29 @@ public class Programm {
             new String[]{"1", "7", "6", "5", "9", "2", "4", "8", "3"},
     };
 
+    private static String[][] aufgabeEinfach = new String[][]{
+            new String[]{"2", "4", leer, leer, leer, leer, leer, leer, "6"},
+            new String[]{"9", "6", "8", "1", "2", leer, leer, "4", leer},
+            new String[]{"7", "5", leer, "6", "9", "4", "8","2", leer},
+            new String[]{"1", leer, "4", "7", "3", "9", "6", "8", "5"},
+            new String[]{leer, "7", leer, leer, "8", "5", "3", "1", "2"},
+            new String[]{"3", "8", "5", "2", "1", leer, "4", "9", leer},
+            new String[]{"8", leer, "2", "3", leer, leer, leer, "5", "4"},
+            new String[]{leer, "3", leer, leer, "4", "2", leer, "6", leer},
+            new String[]{"4", leer, leer, "5", leer, leer, leer, "3", "9"},
+    };
+
     public static void main(String[] args) {
-        String[][] lösung = Löser.sudokuLösen(aufgabe31);
+        Drucker.drucken("AUFGABE");
+        Drucker.neueReiheDrucken();
+
+        String[][] aufgabe = aufgabe31;
+        Drucker.sudokuDrucken(aufgabe);
+
+        String[][] lösung = Löser.sudokuLösen(aufgabe);
+
+        Drucker.drucken("LÖSUNG");
+        Drucker.neueReiheDrucken();
 
         Drucker.sudokuDrucken(lösung);
     }
